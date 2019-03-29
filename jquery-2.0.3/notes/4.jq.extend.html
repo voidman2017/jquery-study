@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../src/jquery-2.0.3.js"></script>
+</head>
+
+<body>
+    <pre>
+        $.extend() //扩展jq工具方法
+        $.fn.extend() //扩展jq实例方法
+        
+        代码简化:
+        jQuery.extend = jQuery.fn.extend = function() {
+            定义一些变量
+            if(){}  判断是不是深拷贝情况
+            if(){} 判断参数是否正确
+            if(){} 判断是不是扩展插件情况
+            for(){ 可能有对个对象情况
+                if(){} 防止循环引用
+                if(){} 深拷贝
+                else if(){} 浅拷贝
+            }
+        };
+
+    </pre>
+    <script>
+        /* $.extend()
+        $.fn.extend()
+        当只写一个对象自变量的时候，调用的是jQ中扩展插件的形式; */
+        $.extend({ //扩展jq工具方法
+            aaa: function () {
+                console.log(1)
+            },
+            bbb: function () {
+                console.log(2)
+            }
+        });
+
+        $.fn.extend({ //扩展jq实例方法
+            aaa: function () {
+                console.log(3)
+            },
+            bbb: function () {
+                console.log(4)
+            }
+        })
+        $.aaa();
+        $.bbb();
+        $().aaa();
+        $().bbb();
+        /* 为什么在{ 285 } 中使用连等号用同一个函数，能够实现不同调用？
+            是因为this的指向不同导致的
+            $.extend() --> this->$
+            $.fn.extend() --> this->$.fn
+        */
+
+        // 当写多个对象自变量的时候，后面的对象都是扩展到第一个对象上(扩展对象)
+        var a1 = { job: 'it' };
+        $.extend(a1, { name: 'hello' }, { age: 25 });
+        console.log(a1);
+
+        // 还可以做深拷贝 和 浅拷贝
+        var a2 = { job: 'it' };
+        var b2 = { name: 'hello', age: 25, obj: { num: 1 } };
+        $.extend(a2, b2);
+        a2.name = 'hi';
+        a2.obj.num = 3;
+        a2.obj.total = 5;
+        console.log(a2, b2);
+        /* 以上是浅拷贝，对于引用数据的属性值，会互相干扰a.obj
+            要实现深拷贝可以在第一位添加参数true
+        */
+        var a3 = { job: 'it' };
+        var b3 = { name: 'hello', age: 25, obj: { num: 1 } };
+        $.extend(true, a3, b3);
+        a3.name = 'hi';
+        a3.obj.num = 3;
+        a3.obj.total = 5;
+        console.log(a3, b3);
+
+        /* {321} 如果注释321行并执行下面代码，会造成循环应用 */
+        var obj = {} ;
+        $.extend(obj, {name : obj});
+        console.log(obj)
+    </script>
+</body>
+
+</html>

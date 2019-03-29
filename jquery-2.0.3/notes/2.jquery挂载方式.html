@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* 通常情况下通过创建构造函数的方法，然后在构造函数的prototype上添加方法；然后通过new实例化一个对象，可以调用对象上的方法 */
+        function Afn(){}   
+        Afn.prototype.init = function(){
+            console.log('init function')
+        } 
+        Afn.prototype.css = function(){
+            console.log('css function')
+        }
+        var a = new Afn();
+        a.css();
+
+        
+        /* jquery对其进行了封装改良 */
+        /* https://juejin.im/post/59eafc04f265da430c10f4f4 */
+        /* 通过原型传递解决问题，把jQuery的原型传递给jQuery.prototype.init.prototype 
+            换句话说jQuery的原型对象覆盖了init构造器的原型对象 
+            因为是引用传递所以不需要担心这个循环引用的性能问题  */
+        /* 通过init作为中转站，最终return出了一个jQuery实例。 */
+        function jQuery(){
+            return new jQuery.prototype.init();
+        }
+        jQuery.prototype.init = function(){
+            console.log('init function');
+        }
+        jQuery.prototype.css = function(){
+            console.log('css function')
+        }
+        jQuery.prototype.init.prototype = jQuery.prototype;
+        console.log(jQuery());
+        jQuery().css();
+</script>
+</body>
+</html>

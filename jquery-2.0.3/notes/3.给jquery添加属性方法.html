@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../src/jquery-2.0.3.js"></script>
+</head>
+
+<body>
+
+    <pre>
+        jQuery.fn = jQuery.prototype = { //添加实例属性和方法
+            jQuery : 版本,
+            constructor: 修正指向问题,
+            init(): 初始化和参数管理,
+            selector: 存储选择字符串,
+            length: this对象的长度,
+            toArray(): 转数组，
+            get(): 转原生集合,
+            pushStack(): JQ对象的入栈,
+            each(): 遍历集合,
+            ready(): DOM加载的接口,
+            slice(): 集合的截取,
+            first(): 集合的第一项，
+            last(): 集合的最后一项,
+            eq(): 集合的指定项,
+            map(): 返回新的集合,
+            end(): 返回集合前一个状态,
+            push(): (内部使用),                         
+            sort(): (内部使用),                         
+            splice(): (内部使用),                         
+        }
+    </pre>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+    <div>div</div>
+    <span>span</span>
+    <p>p</p>
+    <script>
+        /* === constructor === */
+        function Aaa() { };
+        // Aaa.prototype.constructor = Aaa; //这里是自动生成的；
+        // Aaa.prototype.constructor = Array; // 可以被手动更改
+
+        /* Aaa.prototype = {//这里constructor指向也不再是Aaa；
+            name: 'haha',
+            age: 24
+        } */
+        var a1 = new Aaa();
+        // console.log(a1, a1.constructor);
+
+        /* === init === */
+
+        // console.log($('li').css('background','red'));
+        /* $('li')是一个对象集合，包含以0,1,2,。。。为key的dom集合和length属性 */
+
+        /* {116}  */
+        rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/;
+        // console.log(rquickExpr.exec('#div')); // -->  ["#div", undefined, "div", index: 0, input: "#div", groups: undefined]
+        // console.log(rquickExpr.exec('<li>hello')); // -->  ["<li>hello", "<li>", undefined, index: 0, input: "<li>hello", groups: undefined]
+        // console.log(rquickExpr.exec('.div')); // --> null
+        // console.log(rquickExpr.exec('div')); // --> null
+
+        /* context 是一个object：{ 134 } */
+        // $('<li>', { tilte: 'haha', html: 'abcd' }).appendTo('body');
+
+
+        /* === toArray() 、get() === */
+        
+        var li_array = $('li').toArray();
+        // console.log('toArray():', li_array);
+        // li_array.css('background','red'); //这里不能再使用jq的方法，因为此时是原生dom对象的集合了;因而要使用原生方法操作；
+        /* for(var i=0;i<li_array.length;i++){
+            li_array[i].style.background = 'red';
+        } */
+        // console.log('get():', $('li').get());
+        // console.log('get(1):', $('li').get(1));
+
+
+        /* === pushStack() === */
+        /* 这个方法可能在外部使用时比较少，但是在jq内部是比较用的一个方法；比如在slice(){ 248 }方法中, eq();
+            对应的有end()方法出栈
+        */
+        var stack = $('div').pushStack($('span')).pushStack($('p'))
+        console.log(stack,stack.end(),stack.end().end()); //注意看这里的prevObject
+        stack.css('background','red').end().css('color','blue').end().css('font-size','50px');
+
+        var li_stack = $('li').slice(1,5).slice(1,2);
+        console.log(li_stack,li_stack.end(),li_stack.end().end())
+        li_stack.css('color','yellow').end().css('fontSize','30px').end().css('background','green');
+    </script>
+</body>
+
+</html>
