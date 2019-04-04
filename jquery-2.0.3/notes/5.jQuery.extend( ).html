@@ -48,6 +48,8 @@
             swap(): css交换(内部)
         });
     </pre>
+    <input type="button" class="btn-1" value="click">
+    <input type="button" class="btn-2" value="off">
     <script>
         var $ = 123;
         var jQuery = 456;
@@ -115,7 +117,7 @@
         console.log(c) */
 
         /* === $.merge() === */
-        function merge(first, second) {
+        /* function merge(first, second) {
             var l = second.length,
                 i = first.length,
                 j = 0;
@@ -139,7 +141,29 @@
         var c = {0:'a',1:undefined,2:'b'};
         var d = {1:'a',2:undefined,3:'b'};
         var e = {name:'1',age:25}
-        console.log(merge(a, d ))
+        console.log(merge(a, d )) */
+
+        /* === $.grep() === */
+        /* var arr = [1,2,3,4]
+        var res = $.grep( arr, function( n , i){
+            return n >2
+        })
+        console.log(res) */
+
+        /* === $.map() ===  */
+        /* var arr = [1, 2, 3, 4];
+        var res = $.map(arr, function (n, i) {
+            return [n * 2]
+        })
+        console.log(res) */
+
+        /* === $.proxy() === */
+        function show(){
+            console.log(this)
+        }
+
+        $('.btn-1').click($.proxy(show,document))
+
 
     </script>
 </body>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src='../src/jquery-2.0.3.js'></script>
+</head>
+
+<body>
+    <pre>
+        源码简化：
+        jQuery.Callbacks = function( options ) {
+            //传入参数options处理
+            //定义变量和fire方法
+            //定义self对象包含callback方法        
+            return self;
+        };
+    </pre>
+    <script>
+        var cb = $.Callbacks('');
+        function a(){
+            console.log(111);
+            return false;
+        }
+        function b(){
+            console.log(222)
+        }
+        var something = true;
+        function fn1(args){
+            console.log('fn1',args);
+            if(something){
+                cb.fire('测试：执行过程中，第2次触发');
+                cb.fire('测试：执行过程中，第3次触发');
+                something = false;
+            }
+        }
+        cb.add(fn1);
+        cb.fire('测试：第1次触发');
+
+        
+
+    </script>
+</body>
+
+</html>

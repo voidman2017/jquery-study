@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../src/jquery-2.0.3.js"></script>
+</head>
+<body>
+    <script>
+        var cb = $.Callbacks();
+        setTimeout(function(){
+            console.log(111);
+            cb.fire();
+        },1000)
+        cb.add(function(){
+            console.log(222)
+        })
+
+        
+        var dfd = $.Deferred();
+        setTimeout(function(){
+            console.log(111);
+            dfd.resolve();
+        },1000)
+
+        dfd.done(function(){
+            console.log(222)
+        })
+
+    </script>
+</body>
+</html>
