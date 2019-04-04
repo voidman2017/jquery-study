@@ -20,28 +20,51 @@
         };
     </pre>
     <script>
-        var cb = $.Callbacks('');
-        function a(){
-            console.log(111);
-            return false;
-        }
-        function b(){
-            console.log(222)
-        }
-        var something = true;
-        function fn1(args){
-            console.log('fn1',args);
-            if(something){
-                cb.fire('测试：执行过程中，第2次触发');
-                cb.fire('测试：执行过程中，第3次触发');
-                something = false;
-            }
-        }
+        /* {2919,2929} 代码逻辑包含四个逻辑分支 */
+        /* 1）如果不是once模式，即可以多次触发回调函数列表，则从变量stack中弹出存放的下文和参数，再次执行整个回调函数列表，直到stack为空 */
+
+        // var cb = $.Callbacks('');
+        // var something = true;
+        // function fn1(args) {
+        //     console.log('fn1', args);
+        //     if (something) {
+        //         cb.fire('测试：执行过程中，第2次触发');
+        //         cb.fire('测试：执行过程中，第3次触发');
+        //         something = false;
+        //     }
+        // }
+        // cb.add(fn1);
+        // cb.fire('测试：第1次触发');
+        // cb.fire('测试：第4次触发');
+
+        /* 2) 如果是once模式，并且不是memory模式，则禁用回调函数列表。 */
+
+        // var cb = $.Callbacks('once');
+        // function fn1(args) { console.log('fn1', args); }
+        // function fn2(args) { console.log('fn2', args); }
+        // cb.add(fn1);
+        // cb.add(fn2);
+        // cb.fire('测试： once 模式');
+        // console.log('是否已被禁用？', cb.disabled());
+
+        /* 3) 如果是once+stopOnFalse模式，并且某个回调函数返回了false，则禁用回调函数列表 */
+       
+        // var cb = $.Callbacks('once');
+        // function fn1(args) { console.log('fn1', args); return false; }
+        // function fn2(args) { console.log('fn2', args); }
+        // cb.add(fn1);
+        // cb.add(fn2);
+        // cb.fire('测试：once + stopOnFalse模式');
+        // console.log('是否已被禁用？', cb.disabled());
+
+        /* 4) 如果是once + memory模式，则清空数组list，后续添加的回调函数还会立即执行 */
+
+        var cb = $.Callbacks('once memory');
+        function fn1(args) { console.log('fn1', args); }
+        function fn2(args) { console.log('fn2', args); }
         cb.add(fn1);
-        cb.fire('测试：第1次触发');
-
-        
-
+        cb.fire('测试：once + memory模式');//导致清空数组list
+        cb.add(fn2);//依然会执行
     </script>
 </body>
 
