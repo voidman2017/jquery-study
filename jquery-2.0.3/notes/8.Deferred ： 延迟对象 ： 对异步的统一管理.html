@@ -8,18 +8,58 @@
     <script src="../src/jquery-2.0.3.js"></script>
 </head>
 <body>
+    <pre>
+        源码简化：
+        Deferred: function( func ) {
+            var tuples, //映射关系数组
+                state = "pending",
+                promise = {
+                    //...
+                },
+                deferred = {};
+            promise.pipe = promise.then;
+            jQuery.each( tuples, function( i, tuple ) {
+               //...
+            });
+            promise.promise( deferred );
+            if ( func ) {
+                func.call( deferred, deferred );
+            }
+            return deferred;
+        },
+    
+        // Deferred helper
+        when: function( subordinate  ) {
+            var i = 0,
+                resolveValues = core_slice.call( arguments ),
+                length = resolveValues.length,
+                remaining = length !== 1 || ( subordinate && jQuery.isFunction( subordinate.promise ) ) ? length : 0,
+                deferred = remaining === 1 ? subordinate : jQuery.Deferred(),
+                updateFunc = function( i, contexts, values ) {
+                   //...
+                },
+                progressValues, progressContexts, resolveContexts;
+            if ( length > 1 ) {
+                //...
+            }
+            if ( !remaining ) {
+                //...
+            }
+            return deferred.promise();
+        }
+    </pre>
     <script>
-        var cb = $.Callbacks();
+        /* var cb = $.Callbacks();
         setTimeout(function(){
             console.log(111);
             cb.fire();
         },1000)
         cb.add(function(){
             console.log(222)
-        })
+        }) */
 
-        
-        var dfd = $.Deferred();
+        /* === deferred resolve === */
+       /*  var dfd = $.Deferred();
         setTimeout(function(){
             console.log(111);
             dfd.resolve();
@@ -27,7 +67,29 @@
 
         dfd.done(function(){
             console.log(222)
-        })
+        }) */
+
+
+        /* === deferred reject=== */
+        /* var dfd = $.Deferred();
+        setTimeout(function(){
+            console.log(111);
+            dfd.reject();
+        },1000)
+        dfd.fail(function(){
+            console.log(222)
+        }) */
+
+        /* === deferred notify */
+        /* var dfd = $.Deferred();
+        setTimeout(function(){
+            console.log(111);
+            dfd.notify();
+        },1000)
+        dfd.progress(function(){
+            console.log(222)
+        }); */
+
 
     </script>
 </body>
