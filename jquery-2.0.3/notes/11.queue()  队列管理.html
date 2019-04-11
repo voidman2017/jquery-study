@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../src/jquery-2.0.3.js"></script>
+    <style>
+        #div1 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <pre>
+        源码简化：
+        jQuery.extend({
+            queue: function( elem, type, data ) { },
+            dequeue: function( elem, type ) { },
+             _queueHooks: function( elem, type ) { }
+        });
+        
+        jQuery.fn.extend({
+            queue: function( type, data ) { },
+            dequeue: function( type ) { }, 
+            delay: function( time, type ) { },
+            clearQueue: function( type ) { }, 
+            promise: function( type, obj ) { }
+        });
+    </pre>
+    <input type="button" value="1" id="btn1">
+    <input type="button" value="2" id="btn2">
+    <input type="button" value="3" id="btn3">
+    <input type="button" value="reset" id="btn4">
+    <div id="div1"></div>
+
+    <script>
+        function a() {
+            console.log(111)
+        }
+        function b() {
+            console.log(222)
+        }
+        $.queue(document, 'q1', a);
+        $.queue(document, 'q1', b);
+        console.log($.queue(document, 'q1'));
+        $.dequeue(document, 'q1');
+        console.log($.queue(document, 'q1'));
+
+        
+        $('#btn1').click(function () {
+            $("#div1").animate({ width: 300 }, 2000)
+                .animate({ height: 300 }, 2000)
+                .animate({ left: 300 }, 2000);
+        })
+
+        $('#btn2').click(function () {
+            $("#div1").animate({ width: 300 }, 2000)
+                .queue('fx',function(){
+                    console.log('queue')
+                })
+                .animate({ left: 300 }, 2000);
+        })
+
+        $('#btn3').click(function () {
+            $("#div1").animate({ width: 300 }, 2000)
+                .queue(function(){
+                    console.log('queue')
+                })
+                .dequeue()
+                .animate({ left: 300 }, 2000);
+        })
+
+        $("#btn4").click(function(){
+            $("#div1").css({
+                width: 100,
+                height: 100,
+                left: 0
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 私有变量 */
+        function People(num) {
+            var age = num;//这里age是私有变量，外部是无法直接访问的，只可以通过内部作用域的函数对其访问操作
+            this.addAge = function () {
+                age++;
+            }
+            this.getAge = function () {
+                return age;
+            }
+        }
+        var person1 = new People(24);
+        console.log(person1.getAge());
+        person1.addAge();
+        console.log(person1.age);
+        console.log(person1.getAge());
+
+        var person2 = new People(30);
+        console.log(person2.age);
+        console.log(person2.getAge());
+        person2.addAge();
+        console.log(person2.getAge());
+
+        console.log(person1, person2);
+
+
+        /* 绑定函数上下文 */
+        Function.prototype.myBind = function () {
+            var fn = this,
+                args = [...arguments],
+                object = args.shift();
+            return function () {
+                return fn.apply(object, args.concat(...arguments))
+            }
+        }
+        var obj1 = {
+            sayname: function () {
+                console.log(this.name)
+            }
+        }
+        var obj2 = {
+            name: 'obj2'
+        }
+        obj1.sayname.myBind(obj2)();
+
+        /* 偏应用函数 */
+        Function.prototype.partial = function () {
+            var fn = this,
+                args = [...arguments];
+            return function () {
+                var arg = 0;
+                var argsTmp = [...args]
+                for (var i = 0; i < argsTmp.length && arg < arguments.length; i++) {
+                    if (argsTmp[i] === undefined) {
+                        argsTmp[i] = arguments[arg++]
+                    }
+                }
+                return fn.apply(this, argsTmp)
+            }
+        }
+
+        function addAB(a, b) {
+            console.log(a, b)
+        }
+        var hello = addAB.partial('hello', undefined);
+        hello('lionel');
+        hello('karma');
+        var hi = addAB.partial(undefined, 'hi');
+        hi('lionel');
+        hi('karma');
+
+        /* 函数重载 */
+        Function.prototype.memoized = function (key) {
+            this._values = this._values || {};
+            return this._values[key] !== undefined ?
+                this._values[key] + ' memoized' :
+                this._values[key] = this.apply(this, arguments);
+        }
+        Function.prototype.memoize = function () {
+            var fn = this;
+            return function () {
+                // return fn.memoized.apply(fn, arguments);
+                console.log(fn.memoized.apply(fn, arguments))
+            }
+        }
+
+        var computed = (function (num) {
+            // 这里有超级超级复杂的计算,耗时特别久
+            console.log('----计算了很久-----')
+            return 2
+        }).memoize();
+        computed(1); // ----计算了很久-----     2
+        computed(1); // 2 memoized
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src='../src/jquery-2.0.3.js'></script>
+</head>
+
+<body>
+    <div id="div">111</div>
+    <pre>
+
+    </pre>
+    <script>
+        $("#div").data('name', '111');
+        console.log($("#div").data('name'));
+        $("#div").removeData('name');
+        console.log($("#div").data('name'));
+
+        $.data(document.body, 'name', 222);
+        console.log($.data(document.body, 'name'), $.hasData(document.body, 'name'));
+        $.removeData(document.body, 'name');
+        console.log($.data(document.body, 'name'), $.hasData(document.body, 'name'));
+
+        
+
+    </script>
+</body>
+
+</html>

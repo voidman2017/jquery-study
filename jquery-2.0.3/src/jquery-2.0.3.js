@@ -3093,8 +3093,8 @@ jQuery.extend({
 
 		// Add list-specific methods
 		jQuery.each( tuples, function( i, tuple ) {
-			var list = tuple[ 2 ],
-				stateString = tuple[ 3 ];
+			var list = tuple[ 2 ], // --> [ jQuery.Callbacks("once memory") | jQuery.Callbacks("once memory") | jQuery.Callbacks("memory") ]
+				stateString = tuple[ 3 ]; //--> [ "resolved" | "rejected" | undefined ] 
 
 			// promise[ done | fail | progress ] = list.add
 			promise[ tuple[1] ] = list.add;
@@ -3493,8 +3493,8 @@ Data.prototype = {
 };
 
 // These may be used throughout the jQuery core codebase
-data_user = new Data();
-data_priv = new Data();
+data_user = new Data();//外部数据缓存对象实例。其中hasData，data，removeData操作的是这个对象。所以 data, removeData是对应的一组操作
+data_priv = new Data();//内部数据缓存对象实例。其中_data,_removeData操作的是这个对象。 所以 _data, _removeData是对应的一组操作
 
 
 jQuery.extend({

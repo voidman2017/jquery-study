@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Document</title>
     <script src="../src/jquery-2.0.3.js"></script>
 </head>
+
 <body>
     <pre>
         源码简化：
@@ -48,6 +50,7 @@
             return deferred.promise();
         }
     </pre>
+    <input type="button" value="click">
     <script>
         /* var cb = $.Callbacks();
         setTimeout(function(){
@@ -59,15 +62,15 @@
         }) */
 
         /* === deferred resolve === */
-       /*  var dfd = $.Deferred();
-        setTimeout(function(){
-            console.log(111);
-            dfd.resolve();
-        },1000)
-
-        dfd.done(function(){
-            console.log(222)
-        }) */
+        /*  var dfd = $.Deferred();
+         setTimeout(function(){
+             console.log(111);
+             dfd.resolve();
+         },1000)
+ 
+         dfd.done(function(){
+             console.log(222)
+         }) */
 
 
         /* === deferred reject=== */
@@ -90,7 +93,59 @@
             console.log(222)
         }); */
 
+        /* Deferred.promise的使用 */
+
+        /* function aaa(){
+            var dfd = $.Deferred();
+            console.log(dfd.state());
+            setTimeout(function(){
+                dfd.resolve();
+            },1000);
+            // return dfd; //如果返回的是dfd，则外部可以改变状态。
+            return dfd.promise(); //如果返回dfd.promise()，则返回的是promise对象，promise对象下不包括resolve，reject，progress方法，因而外部无法改变状态
+        }
+        var newDfd = aaa();
+        $('input').click(function(){
+            console.log(newDfd.state());
+            newDfd.done(function(){
+                console.log('成功')
+            }).fail(function(){
+                console.log('失败')
+            })
+        });
+        // newDfd.reject();
+
+        var dfd = $.Deferred();
+        console.log(dfd);
+        dfd = dfd.promise();
+        console.log(dfd) */
+
+        /* when */
+        function aaa() {
+            var dfd = $.Deferred();
+            setTimeout(function () {
+                dfd.resolve()
+            }, 1000)
+            return dfd;
+        }
+        function bbb() {
+            var dfd = $.Deferred();
+            setTimeout(function () {
+                dfd.resolve()
+            }, 2000)
+            return dfd;
+        }
+        console.log(new Date())
+        $.when(aaa(), bbb()).done(function () {
+            console.log(new Date())
+            console.log('成功')
+        }).fail(function () {
+            console.log(new Date())
+            console.log('失败')
+        })
+
 
     </script>
 </body>
+
 </html>
