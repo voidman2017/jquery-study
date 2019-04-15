@@ -34,10 +34,11 @@
             promise: function( type, obj ) { }
         });
     </pre>
+    <input type="button" value="reset" id="reset">
     <input type="button" value="1" id="btn1">
     <input type="button" value="2" id="btn2">
     <input type="button" value="3" id="btn3">
-    <input type="button" value="reset" id="btn4">
+    <input type="button" value="4" id="btn4">
     <div id="div1"></div>
 
     <script>
@@ -47,13 +48,19 @@
         function b() {
             console.log(222)
         }
+        /* 以下两种添加方法效果是一样的 */
+        $(document).queue('q1', b);
         $.queue(document, 'q1', a);
-        $.queue(document, 'q1', b);
-        console.log($.queue(document, 'q1'));
-        $.dequeue(document, 'q1');
-        console.log($.queue(document, 'q1'));
+        console.log($(document).queue('q1'));
 
-        
+        /* 添加操作 */
+        console.log(1,$.queue(document, 'q2',a));//对'q2queue'队列首次添加操作，执行{3664}; 目前队列-->[a]
+        console.log(2,$.queue(document, 'q2',b));//对'q2queue'队列非首次添加操作且添加的不是数组，执行{3666}; 目前队列-->[a, b]
+        console.log(3,$.queue(document, 'q2',b));//对'q2queue'队列非首次添加操作且添加的不是数组，执行{3666}; 目前队列-->[a, b, b]
+        console.log(4,$.queue(document, 'q2',[b]));//对'q2queue'队列非首次添加操作，但添加的是数组，执行{3664}; 目前队列-->[b]
+        console.log(5,$.queue(document, 'q2'));//读取操作。跳过{3662,3668}，直接返回{3669}
+
+
         $('#btn1').click(function () {
             $("#div1").animate({ width: 300 }, 2000)
                 .animate({ height: 300 }, 2000)
@@ -62,28 +69,54 @@
 
         $('#btn2').click(function () {
             $("#div1").animate({ width: 300 }, 2000)
-                .queue('fx',function(){
+                .queue('fx', function () {
                     console.log('queue')
                 })
                 .animate({ left: 300 }, 2000);
         })
 
         $('#btn3').click(function () {
-            $("#div1").animate({ width: 300 }, 2000)
-                .queue(function(){
-                    console.log('queue')
+            $("#div1").animate({ width: 300 }, 2000,
+                function () {
+                    /* 这里通过animate的回调函数实现在width变化之后，改变height。但是同时left值也在发生改变 */
+                    var _this = this;
+                    var timer = setInterval(function () {
+                        _this.style.height = _this.offsetHeight + 1 + 'px';
+                        if (_this.offsetHeight >= 200) {
+                            clearInterval(timer);
+                        }
+                    })
                 })
-                .dequeue()
                 .animate({ left: 300 }, 2000);
-        })
+        });
 
-        $("#btn4").click(function(){
+        $('#btn4').click(function () {
+            $("#div1").animate({ width: 300 }, 2000)
+                .queue(function () {
+                    /* 这里通过queue添加到队列方式，在width-->300之后height-->200然后dequeue，继续执行之后的animate：left */
+                    var _this = this;
+                    var timer = setInterval(function () {
+                        _this.style.height = _this.offsetHeight + 1 + 'px';
+                        if (_this.offsetHeight >= 200) {
+                            clearInterval(timer);
+                            $(_this).dequeue();
+                        }
+                    })
+                })
+                .animate({ left: 300 }, 2000);
+        });
+
+        $("#reset").click(function () {
             $("#div1").css({
                 width: 100,
                 height: 100,
                 left: 0
             })
         })
+
+        
+
+
     </script>
 </body>
 

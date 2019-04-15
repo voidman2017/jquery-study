@@ -3531,11 +3531,11 @@ jQuery.fn.extend({
 			data = null;
 
 		// Gets all values
-		if ( key === undefined ) {
+		if ( key === undefined ) {//使用data方法不传参的情况，类似$("#div1").data()，则返回所有的值
 			if ( this.length ) {
 				data = data_user.get( elem );
 
-				if ( elem.nodeType === 1 && !data_priv.get( elem, "hasDataAttrs" ) ) {
+				if ( elem.nodeType === 1 && !data_priv.get( elem, "hasDataAttrs" ) ) { //有html5 属性值data-xxx 的情况
 					attrs = elem.attributes;
 					for ( ; i < attrs.length; i++ ) {
 						name = attrs[ i ].name;
@@ -3659,10 +3659,10 @@ jQuery.extend({
 			queue = data_priv.get( elem, type );
 
 			// Speed up dequeue by getting out quickly if this is just a lookup
-			if ( data ) {
-				if ( !queue || jQuery.isArray( data ) ) {
+			if ( data ) { //如果有第三个参数，添加操作;否则跳过此步骤，直接获取队列。
+				if ( !queue || jQuery.isArray( data ) ) {//首次添加或者添加的是数组时，执行初始添加操作。即之后如果添加的是数组，则会覆盖之前添加的队列
 					queue = data_priv.access( elem, type, jQuery.makeArray(data) );
-				} else {
+				} else {//之后添加
 					queue.push( data );
 				}
 			}
@@ -3673,11 +3673,11 @@ jQuery.extend({
 	dequeue: function( elem, type ) {
 		type = type || "fx";
 
-		var queue = jQuery.queue( elem, type ),
-			startLength = queue.length,
-			fn = queue.shift(),
-			hooks = jQuery._queueHooks( elem, type ),
-			next = function() {
+		var queue = jQuery.queue( elem, type ), //获取队列
+			startLength = queue.length, //队列长度
+			fn = queue.shift(), //队列第一项
+			hooks = jQuery._queueHooks( elem, type ), 
+			next = function() { //即dequeue方法，{3700}以参数形式出入回调方法方便调用
 				jQuery.dequeue( elem, type );
 			};
 
@@ -3738,7 +3738,7 @@ jQuery.fn.extend({
 				// ensure a hooks for this queue
 				jQuery._queueHooks( this, type );
 
-				if ( type === "fx" && queue[0] !== "inprogress" ) {
+				if ( type === "fx" && queue[0] !== "inprogress" ) { //主要是针对jquery.animate方法，在入队的同时自执行了出队操作。以inprogress来控制
 					jQuery.dequeue( this, type );
 				}
 			});

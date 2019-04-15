@@ -10,15 +10,17 @@
 </head>
 
 <body>
-    <div id="div">111</div>
+    <div id="div" data-age='24'>111</div>
     <pre>
 
     </pre>
     <script>
         $("#div").data('name', '111');
         console.log($("#div").data('name'));
-        $("#div").removeData('name');
-        console.log($("#div").data('name'));
+        // console.log($("#div").data());//这里会将html5标签的data属性值添加到缓存中，可以在{3527}加console.log（data_user）查看。在此之前，data_user中只有name,执行之后，会因为{3538，3549}将data-xxx属性值添加到缓存data_user中
+        
+        // $("#div").removeData('name');
+        // console.log($("#div").data('name'));
 
         $.data(document.body, 'name', 222);
         console.log($.data(document.body, 'name'), $.hasData(document.body, 'name'));
