@@ -8,11 +8,26 @@
     <script src="../src/jquery-2.0.3.js"></script>
 </head>
 <body>
-    <div id="div1">aaaaaaaaaaaaaaaaaaa</div>
+    <div id="div1" class="box1">11111111111111111</div>
+    <p class="p1">1</p>
+    <p class="p2">2</p>
+    <p class="p3">3</p>
+    <p class="p4">4</p>
+    <p class="p5">5</p>
     <script>
+        var div = document.getElementById('div1');
         $('#div1').attr('title','hello');
-        console.log($('#div1').attr('id'));
-        console.log($('#div1').prop('id'));
+        $("#div1").attr('name','haha');
+        console.log($('#div1').attr('title'));
+        console.log($('#div1').attr('name'));
+        $('#div1').removeAttr('title name');
+        console.log($('#div1').attr('title'));
+        console.log($('#div1').attr('name'));
+
+        console.log($('p').addClass(function(index,className){
+            console.log(index,className);
+            return 'p-' + index;
+        }))
     </script>
 </body>
 </html>
