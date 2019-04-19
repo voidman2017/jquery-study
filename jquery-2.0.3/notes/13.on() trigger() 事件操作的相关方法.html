@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../src/jquery-2.0.3.js"></script>
+    <style>
+        #outer{
+            width:200px;
+            height:200px;
+            background: red;
+        }
+        #inner{
+            width:100px;
+            height: 100px;
+            background: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <pre>
+        源码简化：
+        jQuery.event = {
+            global: {},
+            add: function( elem, types, handler, data, selector ) { },
+            remove: function( elem, types, handler, selector, mappedTypes ) { },
+            trigger: function( event, data, elem, onlyHandlers ) { },
+            dispatch: function( event ) { },
+            handlers: function( event, handlers ) { },
+            props: "altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),
+            fixHooks: {},
+            keyHooks: { },
+            mouseHooks: { },
+            fix: function( event ) { },
+            special: { },
+            simulate: function( type, elem, event, bubble ) { }
+        };
+
+        jQuery.Event = function( src, props ) { }
+
+        jQuery.Event.prototype = {
+            isDefaultPrevented: returnFalse,
+            isPropagationStopped: returnFalse,
+            isImmediatePropagationStopped: returnFalse,
+            preventDefault: function() { },
+            stopPropagation: function() { },
+        	stopImmediatePropagation: function() { }
+        }
+
+        jQuery.fn.extend({
+            on: function( types, selector, data, fn, /*INTERNAL*/ one ) { },
+            one: function( types, selector, data, fn ) { },
+            off: function( types, selector, fn ) { },
+            trigger: function( type, data ) { },
+            triggerHandler: function( type, data ) { }
+        })
+
+        //6720
+        .click .focus .mousedown ...
+        jQuery.fn.extend({
+            hover: function( fnOver, fnOut ) { }, 
+            bind: function( types, data, fn ) { },
+            unbind: function( types, fn ) { }, 
+            delegate: function( selector, types, data, fn ) { },
+            undelegate: function( selector, types, fn ) { }
+        });
+    </pre>
+    <button>click</button>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul>
+    <input type="text" id="input1">
+
+
+    <div id="outer">
+        <div id="inner"></div>
+    </div>
+    <p id="text"></p>
+    <script>
+        // 两个参数
+        /* $("button").on('click',function(){
+            alert(1)
+        }) */
+
+        // 三个参数
+        /* $("button").on('click',{name:'hello'},function(ev){
+            alert(ev.data.name)
+        }) */
+
+        // 四个参数
+        // $('ul').delegate('li', 'click',{name:'hello'}, function (ev) {
+        //     alert(ev.data.name);
+        //     $(this).css('background','red');
+        // });
+
+        // $(document).on('click', 'li', { name: 'hello' }, function (ev) {
+        //     alert(ev.data.name);
+        //     $(this).css('background', 'red');
+        // })
+
+        /* trigger */
+        // $("#input1").on('focus', function () {
+        //     $(this).css('background', 'red');
+        // });
+        // $("#input1").trigger('focus');//光标自动移入。触发了事件的默认行为
+        // $("#input1").triggerHandler('focus');//光标没有移入。即不会触发事件的默认行为
+
+
+        /* 模拟一下add， remove， trigger */
+        /* function add(ele, types, fn) {
+            ele.listeners = ele.listeners || {};
+            ele.listeners[types] = ele.listeners[types] || [];
+            ele.listeners[types].push(fn);
+            ele.addEventListener(types, fn, false);
+        }
+
+        function remove(ele, types, fn) {
+            ele.removeEventListener(types, fn, false);
+            delete ele.listeners[types];
+        }
+
+        function trigger(ele, types) {
+            var arr = ele.listeners[types] || [];
+            for (var i = 0; i < arr.length; i++) {
+                arr[i]();
+            }
+        }
+        function aaa() {
+            alert(111)
+        }
+        function bbb() {
+            alert(222)
+        }
+        function show() {
+            alert('show')
+        }
+        var btn = document.getElementsByTagName('button')[0];
+        add(btn, 'click', aaa);
+        add(btn, 'click', bbb);
+        add(btn, 'show', show);
+        add(btn, 'show', aaa);
+        add(btn, 'show', bbb);
+        remove(btn, 'click', aaa);
+        trigger(btn, 'show'); */
+
+        /* $("button").on('click.aaa',function(a){
+            alert(1)
+        });
+        $("button").on('mouseover',function(b){
+            alert(2)
+        });
+        $("button").on('click',function(c){
+            alert(3)
+        });
+        $('body').on('click','button',function(d){
+            alert(4)
+        }) */
+
+
+        /* 嵌套 */
+        var div_outer = document.getElementById('outer');
+        var div_inner = document.getElementById('inner');
+        var text = document.getElementById('text')
+        
+        /* === step1 === 
+        onmouseover、onmouseout会受嵌套影响，当鼠标进入嵌套的内存dom也会触发回调
+        */
+        /* div_outer.onmouseover = function(){
+            text.innerHTML += '1';
+            div_inner.style.display = 'block';
+        }
+        div_outer.onmouseout = function(){
+            text.innerHTML += '2';
+            div_inner.style.display = 'none';
+        } */
+
+
+        /* === step2 ===
+        onmouseenter、onmouseleave可以有效解决这个问题，但是有兼容问题存在，部分浏览器不兼容
+        */
+        /* div_outer.onmouseenter = function(){
+            text.innerHTML += '1';
+            div_inner.style.display = 'block';
+        }
+        div_outer.onmouseleave = function(){
+            text.innerHTML += '2';
+            div_inner.style.display = 'none';
+        } */
+
+        /* === step3 
+        通过在回调中判断元素是否是嵌套关系来决定是否执行后续操作
+        === */
+        /* div_outer.onmouseover = function(ev){
+            var ev = ev || window.event;
+            var a = this;
+            var b = ev.relatedTarget;
+            if( elContains(a, b) || a == b) return false;
+            text.innerHTML += '1';
+        }
+        div_outer.onmouseout   = function(ev){
+            var ev = ev || window.event;
+            var a = this;
+            var b = ev.relatedTarget;
+            if( elContains(a, b) || a == b) return false;
+            text.innerHTML += '2';
+        }
+        function elContains(a, b){ //两个元素是否是嵌套关系
+            return a.contains ? a != b  && a.contains(b) : !!(a.compareDocumentPosition(b) & 16);
+        } */
+    
+    </script>
+</body>
+
+</html>

@@ -4431,7 +4431,7 @@ jQuery.event = {
 		}
 
 		// Nullify elem to prevent memory leaks in IE
-		elem = null;
+		elem = null; //console.log(elemData)
 	},
 
 	// Detach an event or set of events from an element
@@ -4637,13 +4637,13 @@ jQuery.event = {
 	dispatch: function( event ) {
 
 		// Make a writable jQuery.Event from the native event object
-		event = jQuery.event.fix( event );
+		event = jQuery.event.fix( event ); //兼容处理
 
 		var i, j, ret, matched, handleObj,
 			handlerQueue = [],
 			args = core_slice.call( arguments ),
 			handlers = ( data_priv.get( this, "events" ) || {} )[ event.type ] || [],
-			special = jQuery.event.special[ event.type ] || {};
+			special = jQuery.event.special[ event.type ] || {}; //特殊事件处理
 
 		// Use the fix-ed jQuery.Event rather than the (read-only) native event
 		args[0] = event;
@@ -5030,7 +5030,7 @@ jQuery.fn.extend({
 		var origFn, type;
 
 		// Types can be a map of types/handlers
-		if ( typeof types === "object" ) {
+		if ( typeof types === "object" ) { //当传入第一个参数传入JSON对象，通过for .... in 循环添加
 			// ( types-Object, selector, data )
 			if ( typeof selector !== "string" ) {
 				// ( types-Object, data )
@@ -5043,7 +5043,7 @@ jQuery.fn.extend({
 			return this;
 		}
 
-		if ( data == null && fn == null ) {
+		if ( data == null && fn == null ) { //参数顺序处理
 			// ( types, fn )
 			fn = selector;
 			data = selector = undefined;

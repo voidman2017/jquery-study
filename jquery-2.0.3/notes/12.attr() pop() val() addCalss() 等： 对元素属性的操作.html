@@ -6,6 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script src="../src/jquery-2.0.3.js"></script>
+    <style>
+        .bg-red{
+            background-color: rgb(236, 86, 86);
+        }
+        .c-blue{
+            color: rgb(36, 132, 221);
+        }
+    </style>
 </head>
 <body>
     <div id="div1" class="box1">11111111111111111</div>
@@ -14,6 +22,9 @@
     <p class="p3">3</p>
     <p class="p4">4</p>
     <p class="p5">5</p>
+
+    <button id="btn">click</button>
+    <h3 class="bg-red c-blue">toggleClass</h3>
     <script>
         var div = document.getElementById('div1');
         $('#div1').attr('title','hello');
@@ -28,6 +39,15 @@
             console.log(index,className);
             return 'p-' + index;
         }))
+
+        $("#btn").click(function(){
+            /* 这里两个是不一样的。
+            第一种是value是string，会执行{3915,3932}，只会单纯的对传入的value:'bg-red'做removeClass或者addClass操作；
+            第二种是value是undefined，会执行{3932，3943}，是通过data_priv缓存来实现的。是对所有的class进行操作
+            */
+            $('h3').toggleClass('bg-red');
+            // $('h3').toggleClass();
+        })
     </script>
 </body>
 </html>
