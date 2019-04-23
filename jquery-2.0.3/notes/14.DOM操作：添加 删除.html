@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../src/jquery-2.0.3.js"></script>
+</head>
+<body>
+    <pre>
+        源码简化：
+        jQuery.fn.extend({
+            find: function( selector ) { },
+            has: function( target ) { },
+            not: function( selector ) { },
+            filter: function( selector ) { },
+            is: function( selector ) { },
+            closest: function( selectors, context ) { },
+            index: function( elem ) { },
+            add: function( selector, context ) { },
+            addBack: function( selector ) { }
+        });
+
+        jQuery.each({
+            parent: function( elem ) { },
+            parents: function( elem ) { },
+            parentsUntil: function( elem, i, until ) { },
+            next: function( elem ) { },
+            prev: function( elem ) { },
+            nextAll: function( elem ) { },
+            prevAll: function( elem ) { },
+            nextUntil: function( elem, i, until ) { },
+            prevUntil: function( elem, i, until ) { },
+            siblings: function( elem ) { },
+            children: function( elem ) { },
+            contents: function( elem ) { }
+        })
+
+        jQuery.fn.extend({
+            text: function( value ) { },
+            append: function() { },
+            prepend: function() { },
+            before: function() { },
+            after: function() { },
+            remove: function( selector, keepData ) { },
+            empty: function() { },
+            clone: function( dataAndEvents, deepDataAndEvents ) { },
+            html: function( value ) { },
+            replaceWith: function() { },
+            detach: function( selector ) { },
+            domManip: function( args, callback, allowIntersection ) { }
+        });
+
+        jQuery.each({
+            appendTo: "append",
+            prependTo: "prepend",
+            insertBefore: "before",
+            insertAfter: "after",
+            replaceAll: "replaceWith"
+        })
+
+        jQuery.extend({
+            clone: function( elem, dataAndEvents, deepDataAndEvents ) { },
+            buildFragment: function( elems, context, scripts, selection ) { },
+            cleanData: function( elems ) { },
+            _evalUrl: function( url ) {}
+        });
+    </pre>
+    <div class="box"> div  <span>span</span> </div>
+    <div>div2</div>
+    <script>
+        $('div').has('span').css('border','1px solid red')
+    </script>
+</body>
+</html>
