@@ -50,16 +50,16 @@
         // Aaa.prototype.constructor = Aaa; //这里是自动生成的；
         // Aaa.prototype.constructor = Array; // 可以被手动更改
 
-        /* Aaa.prototype = {//这里constructor指向也不再是Aaa；
+       /*  Aaa.prototype = {//这里constructor指向也不再是Aaa；
             name: 'haha',
             age: 24
         } */
         var a1 = new Aaa();
-        // console.log(a1, a1.constructor);
+        // console.log('constructor',a1, a1.constructor);
 
         /* === init === */
 
-        // console.log($('li').css('background','red'));
+        console.log($('li').css('background','red'));
         /* $('li')是一个对象集合，包含以0,1,2,。。。为key的dom集合和length属性 */
 
         /* {116}  */
@@ -89,13 +89,13 @@
         /* 这个方法可能在外部使用时比较少，但是在jq内部是比较用的一个方法；比如在slice(){ 248 }方法中, eq();
             对应的有end()方法出栈
         */
-        var stack = $('div').pushStack($('span')).pushStack($('p'))
+        /* var stack = $('div').pushStack($('span')).pushStack($('p'))
         console.log(stack,stack.end(),stack.end().end()); //注意看这里的prevObject
         stack.css('background','red').end().css('color','blue').end().css('font-size','50px');
 
         var li_stack = $('li').slice(1,5).slice(1,2);
         console.log(li_stack,li_stack.end(),li_stack.end().end())
-        li_stack.css('color','yellow').end().css('fontSize','30px').end().css('background','green');
+        li_stack.css('color','yellow').end().css('fontSize','30px').end().css('background','green'); */
     </script>
 </body>
 
