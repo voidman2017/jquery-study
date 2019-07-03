@@ -5537,8 +5537,8 @@ jQuery.fn.extend({
 			var elem = this[ 0 ] || {},
 				i = 0,
 				l = this.length;
-
-			if ( value === undefined && elem.nodeType === 1 ) {
+			//根据参数判断需要执行的操作
+			if ( value === undefined && elem.nodeType === 1 ) { //如果没有传参，就执行获取操作
 				return elem.innerHTML;
 			}
 
@@ -5728,7 +5728,7 @@ jQuery.extend({
 			srcElements = getAll( elem );
 
 			for ( i = 0, l = srcElements.length; i < l; i++ ) {
-				fixInput( srcElements[ i ], destElements[ i ] );
+				fixInput( srcElements[ i ], destElements[ i ] ); //针对ie9 ，对于 input 做fix处理
 			}
 		}
 
@@ -5767,7 +5767,7 @@ jQuery.extend({
 			elem = elems[ i ];
 
 			if ( elem || elem === 0 ) {
-
+				
 				// Add nodes directly
 				if ( jQuery.type( elem ) === "object" ) {
 					// Support: QtWebKit
@@ -5775,7 +5775,7 @@ jQuery.extend({
 					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
 
 				// Convert non-html into a text node
-				} else if ( !rhtml.test( elem ) ) {
+				} else if ( !rhtml.test( elem ) ) { // 文本节点 ，eg： $('span').append('hello')
 					nodes.push( context.createTextNode( elem ) );
 
 				// Convert html into DOM nodes
@@ -5978,11 +5978,11 @@ function fixInput( src, dest ) {
 	var nodeName = dest.nodeName.toLowerCase();
 
 	// Fails to persist the checked state of a cloned checkbox or radio button.
-	if ( nodeName === "input" && manipulation_rcheckableType.test( src.type ) ) {
+	if ( nodeName === "input" && manipulation_rcheckableType.test( src.type ) ) { // 判断是否是 复选框 或者 单选框 checkbox\radio
 		dest.checked = src.checked;
 
 	// Fails to return the selected option to the default selected state when cloning options
-	} else if ( nodeName === "input" || nodeName === "textarea" ) {
+	} else if ( nodeName === "input" || nodeName === "textarea" ) { // 如果是 textarea 也要进行赋值处理
 		dest.defaultValue = src.defaultValue;
 	}
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Document</title>
     <script src="../src/jquery-2.0.3.js"></script>
 </head>
+
 <body>
     <pre>
         源码简化：
@@ -67,10 +69,62 @@
             _evalUrl: function( url ) {}
         });
     </pre>
-    <div class="box"> div  <span>span</span> </div>
+    <div class="box"> div <span>span</span> </div>
     <div>div2</div>
+
+    <div class="input-container">
+        <input type="checkbox">
+        <input type="checkbox">
+    </div>
+    <div id="clone-container">
+        <div class="clone">
+            parent
+            <p>
+                child
+            </p>
+        </div>
+    </div>
+    <div class="html">html</div>
+    <div class="before">before</div>
     <script>
-        $('div').has('span').css('border','1px solid red')
+        // $('div').has('span').css('border', '1px solid red')
+        /* --- clone --- */
+        // $('input').prop('checked', true);
+        // $('input').clone().appendTo('.input-container');
+
+        // 绑定的事件clone
+        // $('.clone').click(function () {
+        //     alert('parent')
+        // })
+        // $('.clone p').click(function () {
+        //     alert('child');
+        //     return false;
+        // })
+        // $('.clone').clone().appendTo('#clone-container'); // 绑定的事件不会被clone
+        // $('.clone').clone(true, false).appendTo('#clone-container'); // 绑定的事件会被clone,但是子节点的事件不会被clone
+        // $('.clone').clone(true).appendTo('#clone-container'); // 绑定的事件会被clone,同时子节点的事件也会被clone
+        // $('.clone').clone(true, true).appendTo('#clone-container'); // 绑定的事件会被clone,同时子节点的事件也会被clone
+
+
+        /* --- html --- */
+        // $('.html').get(0).innerHTML = '<script>alert(1)<\/script>'; // 通过原生操作并不会执行script中的内容
+        // $('.html').html('<script>alert(1)<\/script>') // 通过jq 提供的html 方法可以执行script方法；是因为执行调用了 empty 和 append 方法。
+        // $('.html').get(0).innerHTML = '<tr></tr>'
+        // $('.html').html('</div>')
+
+        /* --- before after --- */
+        /* 都调用了 domManip ，before 和 after的实现方法基本一致，都是使用原生js 方法 insertBefore ，只不过是 after 相比于 before 是在当前元素的下一个兄弟节点 insertBefore */
+        // $('.before').before($('span'))
+        // $('.before').after($('span'))
+        // $('.before').append('<h1>123</h1>')
+
+        /*  */
+        $('span').append($('div'));
+        // $('span').append('hello');
+
+        
     </script>
+
 </body>
+
 </html>
