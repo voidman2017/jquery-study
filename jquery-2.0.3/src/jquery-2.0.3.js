@@ -5769,17 +5769,17 @@ jQuery.extend({
 			if ( elem || elem === 0 ) {
 				
 				// Add nodes directly
-				if ( jQuery.type( elem ) === "object" ) {
+				if ( jQuery.type( elem ) === "object" ) { // 原生对象 或者 jq获取到的对象
 					// Support: QtWebKit
 					// jQuery.merge because core_push.apply(_, arraylike) throws
 					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
 
 				// Convert non-html into a text node
-				} else if ( !rhtml.test( elem ) ) { // 文本节点 ，eg： $('span').append('hello')
+				} else if ( !rhtml.test( elem ) ) { // 字符串 ，eg： $('span').append('hello')
 					nodes.push( context.createTextNode( elem ) );
 
 				// Convert html into DOM nodes
-				} else {
+				} else { 
 					tmp = tmp || fragment.appendChild( context.createElement("div") );
 
 					// Deserialize a standard representation
